@@ -1,0 +1,22 @@
+{
+  "dock_apps": [
+    "app.noortv.epl",
+    "com.majnioui.tv.prayer",
+    "com.netflix.ninja",
+    "com.google.android.youtube.tv"
+  ],
+  "wallpaper_true_color": true,
+  "wallpaper": true,
+  "wallpaper_rotation_minutes": 10,
+  "wallpaper_dim": 30,
+  "background_color": "#0a1430",
+  "dock_glass": true,
+  "glass_style": "glass",
+  "ambient_glow": false,
+  "columns": 4,
+  "icon_only_inputs": true,
+  "hidden_apps": [
+    "app.noortv.kahf"
+  ],
+  "wallpaper_order": "shuffle"
+}

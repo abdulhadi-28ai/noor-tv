@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds a theme folder ready for CleanYourTV's tools/theme.sh: the shape (themes/<name>) on top of the
 base dock (theme/config.json), plus this TV's remote keys.
-Usage: tools/make-theme.py <zakhrafa|masjid-layl|awqat|plain> <out-folder> [brand-example-config.json]"""
+Usage: tools/make-theme.py <zakhrafa|masjid-layl|awqat|kora|plain> <out-folder> [brand-example-config.json]"""
 import json, os, shutil, sys
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

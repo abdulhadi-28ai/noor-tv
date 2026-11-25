@@ -5,3 +5,7 @@ noor-app/local.properties
 noor-app/app/src/kahf/res/raw/
 *.apk
 .DS_Store
+epl-app/build/
+epl-app/app/build/
+epl-app/.gradle/
+epl-app/local.properties

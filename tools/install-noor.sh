@@ -12,6 +12,8 @@ for f in kahf baqara sabah masa ruqya; do
 done
 adb -s "$D" shell appops set app.noortv.kahf SYSTEM_ALERT_WINDOW allow
 adb -s "$D" shell appops set app.noortv.kahf GET_USAGE_STATS allow
+adb -s "$D" shell appops set app.noortv.kahf SCHEDULE_EXACT_ALARM allow # the adhan at the exact minute (Android 14)
+adb -s "$D" shell appops set app.noortv.kahf AUTO_START allow 2>/dev/null || true # TCL firmware blocks background starts without it
 sleep 8 # Android restarts the app right after an update, so start it once that has settled
 adb -s "$D" shell am broadcast -n app.noortv.kahf/app.noortv.Reminder >/dev/null
 echo "Phone page: http://$1:8080"

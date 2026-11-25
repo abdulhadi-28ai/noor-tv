@@ -45,6 +45,7 @@ public class Reminder extends BroadcastReceiver {
             MessageServer.start(c);
             return;
         }
+        if (!BuildConfig.SALAWAT) return;
         if (!Settings.canDrawOverlays(c)) return;
         Calendar now = Calendar.getInstance();
         boolean friday = now.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY && now.get(Calendar.HOUR_OF_DAY) < 17;

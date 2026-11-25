@@ -34,7 +34,7 @@ import java.util.Locale;
 
 /**
  * The adhan at each prayer time for the city in gradle.properties. With the home screen up and nothing playing it plays the adhan in
- * res/raw (tools/fetch-adhan.sh) under a banner; while a film, a channel or HDMI is on it only shows the banner, so nothing is
+ * res/raw (tools/fetch-adhan.sh) under a banner; while a film, a channel or HDMI is on it does nothing at all, so nothing is
  * cut off. Fajr is banner only: most adhan recordings lack «الصلاة خير من النوم». Only the Kahf shortcut runs it.
  */
 public class Adhan extends BroadcastReceiver {
@@ -76,7 +76,15 @@ public class Adhan extends BroadcastReceiver {
         Intent fire = new Intent(c, Adhan.class).setAction(FIRE).putExtra("p", prayer);
         PendingIntent pi = PendingIntent.getBroadcast(c, 1, fire,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        c.getSystemService(AlarmManager.class).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, when, pi);
+        AlarmManager am = c.getSystemService(AlarmManager.class);
+        try {
+            if (am.canScheduleExactAlarms()) {
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, when, pi);
+                return;
+            }
+        } catch (SecurityException ignored) {
+        }
+        am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, when, pi); // within a few minutes, never a crash
     }
 
     /** "HH:mm" for Fajr..Isha on that day, from Aladhan (noor.method), cached per day for offline days. */
@@ -105,9 +113,11 @@ public class Adhan extends BroadcastReceiver {
         int prayer = i.getIntExtra("p", 1);
         schedule(app);
         if (!app.getSystemService(PowerManager.class).isInteractive()) return; // TV is off
-        boolean idle = prayer != 0 && HOME.equals(topApp(app))
-                && !app.getSystemService(AudioManager.class).isMusicActive();
-        fire(app, prayer, idle);
+        // Only on the home screen with nothing playing. While a film, a match, a channel or HDMI is on:
+        // no sound and no banner at all, so nothing is interrupted.
+        boolean idle = HOME.equals(topApp(app)) && !app.getSystemService(AudioManager.class).isMusicActive();
+        if (!idle) return;
+        fire(app, prayer, prayer != 0);
     }
 
     /** Banner always; the adhan itself only when play is true. */
